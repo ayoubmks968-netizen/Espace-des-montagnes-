@@ -1,10 +1,699 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>Espace des Montagnes</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Espace des Montagnes ⛰️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --mountain: #1a2e1a;
+      --forest: #2d5a27;
+      --moss: #4a7c3f;
+      --gold: #c9a84c;
+      --cream: #f5f0e8;
+      --smoke: #e8e0d0;
+      --dark: #0f1a0f;
+      --text: #1c2b1c;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── LANG SWITCHER ── */
+    .lang-bar {
+      background: var(--dark);
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      padding: 8px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .lang-btn {
+      background: transparent;
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+    .lang-btn:hover, .lang-btn.active {
+      background: var(--gold);
+      color: var(--dark);
+      border-color: var(--gold);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--dark) 0%, var(--mountain) 50%, #0d1f0d 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 220px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 220'%3E%3Cpath fill='%23f5f0e8' d='M0,220 L0,140 L120,80 L240,130 L360,60 L480,110 L600,40 L720,100 L840,30 L960,90 L1080,20 L1200,80 L1320,50 L1440,90 L1440,220 Z'/%3E%3C/svg%3E") no-repeat bottom center;
+      background-size: cover;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 6px 20px;
+      border-radius: 30px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 9vw, 7rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 span {
+      color: var(--gold);
+      display: block;
+    }
+
+    .hero-mountain {
+      font-size: clamp(3rem, 8vw, 6rem);
+      margin: 12px 0;
+      line-height: 1;
+    }
+
+    .hero-tagline {
+      color: rgba(255,255,255,0.7);
+      font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+      font-weight: 300;
+      margin: 20px 0 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-icons {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0 36px;
+    }
+
+    .hero-icon-pill {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      backdrop-filter: blur(4px);
+    }
+
+    .open-badge {
+      background: rgba(74,124,63,0.3);
+      border: 1px solid var(--moss);
+      color: #7ddf6a;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .open-badge::before {
+      content: '';
+      width: 8px; height: 8px;
+      background: #7ddf6a;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 14px 32px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      background: #e0bc5a;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.35);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 15px;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      cursor: pointer;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 80px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--moss);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--mountain);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .section-title .gold { color: var(--gold); }
+
+    /* ── SERVICES GRID ── */
+    .services-bg {
+      background: var(--white);
+      padding: 0;
+    }
+    .services-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .service-card {
+      background: var(--cream);
+      border: 1px solid var(--smoke);
+      border-radius: 20px;
+      padding: 36px 28px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(26,46,26,0.1);
+      border-color: var(--gold);
+    }
+    .service-card:hover::after { transform: scaleX(1); }
+
+    .service-emoji {
+      font-size: 3rem;
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--mountain);
+      margin-bottom: 10px;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      color: #5a6b5a;
+      line-height: 1.7;
+    }
+
+    /* ── MATCH SECTION ── */
+    .match-bg {
+      background: linear-gradient(135deg, var(--mountain) 0%, #0d2b0d 100%);
+      border-radius: 32px;
+      margin: 0 24px 80px;
+      padding: 64px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .match-bg::before {
+      content: '🇲🇦';
+      font-size: 200px;
+      position: absolute;
+      opacity: 0.05;
+      top: -20px;
+      right: -20px;
+    }
+
+    .match-bg h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .match-bg p {
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+      max-width: 500px;
+      margin: 0 auto 32px;
+      line-height: 1.8;
+    }
+
+    .match-flags {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      letter-spacing: 10px;
+    }
+
+    /* ── RESERVATION ── */
+    .reservation-bg {
+      background: var(--smoke);
+      padding: 0;
+    }
+    .reservation-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 36px;
+      text-align: left;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1/-1; }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--moss);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--white);
+      border: 1.5px solid transparent;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-submit {
+      margin-top: 20px;
+      width: 100%;
+      padding: 16px;
+      background: var(--mountain);
+      color: var(--white);
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Inter', sans-serif;
+    }
+    .form-submit:hover {
+      background: var(--forest);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(26,46,26,0.25);
+    }
+
+    .success-msg {
+      display: none;
+      background: rgba(74,124,63,0.1);
+      border: 1px solid var(--moss);
+      color: var(--forest);
+      padding: 16px 24px;
+      border-radius: 12px;
+      margin-top: 16px;
+      font-weight: 500;
+    }
+
+    /* ── CONTACT ── */
+    .contact-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .contact-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 28px 20px;
+      text-align: center;
+      border: 1px solid var(--smoke);
+      transition: all 0.25s;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(26,46,26,0.1);
+      border-color: var(--gold);
+    }
+    .contact-card .icon { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+    .contact-card .label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--moss);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .contact-card .value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--mountain);
+    }
+
+    /* ── PRAYER/FAMILY ── */
+    .extras-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .extra-card {
+      background: var(--mountain);
+      color: var(--white);
+      border-radius: 24px;
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .extra-card.light {
+      background: var(--gold);
+      color: var(--dark);
+    }
+    .extra-card .big-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .extra-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .extra-card p { font-size: 14px; opacity: 0.85; line-height: 1.7; }
+
+    /* ── ARABIC ── */
+    .arabic { font-family: 'Amiri', serif; direction: rtl; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 40px 24px;
+      font-size: 13px;
+    }
+    footer .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .extras-grid { grid-template-columns: 1fr; }
+      .match-bg { margin: 0 0 60px; border-radius: 0; padding: 48px 24px; }
+    }
+
+    /* ── LANG VISIBILITY ── */
+    [data-lang] { display: none; }
+    [data-lang].visible { display: block; }
+    [data-lang="fr"].visible,
+    [data-lang="en"].visible,
+    [data-lang="ar"].visible { display: block; }
+  </style>
 </head>
 <body>
-  <h1>Welcome to Espace des Montagnes</h1>
-  <p>My website is live!</p>
-</body>
-</html>
+
+<!-- LANG SWITCHER -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('fr')">🇫🇷 FR</button>
+  <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+  <button class="lang-btn" onclick="setLang('ar')">🇲🇦 AR</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-badge">
+    <span data-lang="fr">Bienvenue chez nous</span>
+    <span data-lang="en">Welcome to our place</span>
+    <span data-lang="ar" class="arabic">أهلاً وسهلاً</span>
+  </div>
+
+  <h1>
+    Espace des
+    <span>Montagnes</span>
+  </h1>
+
+  <div class="hero-mountain">⛰️</div>
+
+  <div class="hero-icons">
+    <div class="hero-icon-pill">☕
+      <span data-lang="fr">Café</span>
+      <span data-lang="en">Coffee</span>
+      <span data-lang="ar" class="arabic">قهوة</span>
+    </div>
+    <div class="hero-icon-pill">🍽️
+      <span data-lang="fr">Restaurant</span>
+      <span data-lang="en">Restaurant</span>
+      <span data-lang="ar" class="arabic">مطعم</span>
+    </div>
+    <div class="hero-icon-pill">⛽
+      <span data-lang="fr">Station-service</span>
+      <span data-lang="en">Gas Station</span>
+      <span data-lang="ar" class="arabic">محطة وقود</span>
+    </div>
+  </div>
+
+  <div class="open-badge">
+    <span data-lang="fr">Ouvert 7j/7 — Toujours là pour vous</span>
+    <span data-lang="en">Open 7 days a week — Always here for you</span>
+    <span data-lang="ar" class="arabic">مفتوح 7 أيام في الأسبوع</span>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#reservation" class="btn-primary">
+      📅
+      <span data-lang="fr">Réserver une table</span>
+      <span data-lang="en">Book a table</span>
+      <span data-lang="ar" class="arabic">احجز طاولة</span>
+    </a>
+    <a href="#contact" class="btn-secondary">
+      📞
+      <span data-lang="fr">Nous appeler</span>
+      <span data-lang="en">Call us</span>
+      <span data-lang="ar" class="arabic">اتصل بنا</span>
+    </a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<div class="services-bg">
+  <div class="services-inner">
+    <div class="section-label">
+      <span data-lang="fr">Nos services</span>
+      <span data-lang="en">Our services</span>
+      <span data-lang="ar" class="arabic">خدماتنا</span>
+    </div>
+    <h2 class="section-title">
+      <span data-lang="fr">Tout ce dont vous avez besoin, <span class="gold">au même endroit</span></span>
+      <span data-lang="en">Everything you need, <span class="gold">in one place</span></span>
+      <span data-lang="ar" class="arabic">كل ما تحتاجه <span class="gold">في مكان واحد</span></span>
+    </h2>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-emoji">☕</span>
+        <h3 data-lang="fr">Café & Boissons</h3>
+        <h3 data-lang="en">Coffee & Drinks</h3>
+        <h3 data-lang="ar" class="arabic">قهوة ومشروبات</h3>
+        <p data-lang="fr">Savourez notre sélection de cafés chauds, thés à la menthe, jus frais et bien plus dans une atmosphère chaleureuse.</p>
+        <p data-lang="en">Enjoy our selection of hot coffees, mint teas, fresh juices and more in a warm atmosphere.</p>
+        <p data-lang="ar" class="arabic">استمتع بتشكيلتنا من القهوة الساخنة والشاي بالنعناع والعصائر الطازجة في أجواء دافئة.</p>
+      </div>
+
+      <div class="service-card">
+        <span class="service-emoji">🍽️</span>
+        <h3 data-lang="fr">Restaurant</h3>
+        <h3 data-lang="en">Restaurant</h3>
+        <h3 data-lang="ar" class="arabic">مطعم</h3>
+        <p data-lang="fr">Plats maison préparés avec soin — cuisine marocaine authentique et plats internationaux pour tous les goûts.</p>
+        <p data-lang="en">Homemade dishes prepared with care — authentic Moroccan cuisine and international dishes for every taste.</p>
+        <p data-lang="ar" class="arabic">أطباق منزلية محضرة بعناية — مطبخ مغربي أصيل وأطباق عالمية لجميع الأذواق.</p>
+      </div>
+
+      <div class="service-card">
+        <span class="service-emoji">⛽</span>
+        <h3 data-lang="fr">Station-service</h3>
+        <h3 data-lang="en">Gas Station</h3>
+        <h3 data-lang="ar" class="arabic">محطة الوقود</h3>
+        <p data-lang="fr">Station-service complète disponible sur place pour que votre route continue sereinement.</p>
+        <p data-lang="en">Full gas station on-site so your journey continues smoothly.</p>
+        <p data-lang="ar" class="arabic">محطة وقود متكاملة في الموقع لمتابعة رحلتك بأمان.</p>
+      </div>
+
+      <div class="service-card">
+        <span class="service-emoji">👨‍👩‍👧‍👦</span>
+        <h3 data-lang="fr">Espace Familial</h3>
+        <h3 data-lang="en">Family Space</h3>
+        <h3 data-lang="ar" class="arabic">فضاء عائلي</h3>
+        <p data-lang="fr">Un lieu conçu pour toute la famille. Espace enfants, confort et sécurité pour petits et grands.</p>
+        <p data-lang="en">A place designed for the whole family. Kids' area, comfort and safety for everyone.</p>
+        <p data-lang="ar" class="arabic">مكان مصمم للعائلة بأكملها. ركن للأطفال وراحة وأمان للجميع.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOSQUE + KIDS -->
+<section>
+  <div class="extras-grid">
+    <div class="extra-card">
+      <span class="big-icon">🕌</span>
+      <h3 data-lang="fr">Mosquée</h3>
+      <h3 data-lang="en">Mosque</h3>
+      <h3 data-lang="ar" class="arabic">مسجد</h3>
+      <p data-lang="fr">Un espace de prière disponible sur place pour votre confort spirituel. Propre, calme et accessible.</p>
+      <p data-lang="en">A prayer space available on-site for your spiritual comfort. Clean, quiet and accessible.</p>
+      <p data-lang="ar" class="arabic">مصلى متاح في الموقع لراحتكم الروحية. نظيف وهادئ وسهل الوصول.</p>
+    </div>
+
+    <div class="extra-card light">
+      <span class="big-icon">🧒</span>
+      <h3 data-lang="fr">Espace Enfants</h3>
+      <h3 data-lang="en">Kids' Corner</h3>
+      <h3 data-lang="ar" class="arabic">ركن الأطفال</h3>
+      <p data-lang="fr">Pendant que vous vous relaxez, vos enfants profitent d'un espace sécurisé et amusant rien que pour eux.</p>
+      <p data-lang="en">While you relax, your children enjoy a safe and fun space just for them.</p>
+      <p data-lang="ar" class="arabic">بينما تستريح، يستمتع أطفالك بمساحة آمنة وممتعة مخصصة لهم.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORLD CUP MATCH -->
+<div class="match-bg">
+  <div class="match-flags">🇲🇦⚽🏆</div>
+  <h2 data-lang="fr">Regardez le Maroc en Coupe du Monde !</h2>
+  <h2 data-lang="en">Watch Morocco at the World Cup!</h2>
+  <h2 data-lang="ar" class="arabic">شاهد المغرب في كأس العالم!</h2>
+  <p data-lang="fr">Rejoignez-nous pour vivre la magie des Lions de l'Atlas sur grand écran. Ambiance garantie, snacks et boissons disponibles. On y croit ensemble !</p>
+  <p data-lang="en">Join us to experience the magic of the Atlas Lions on the big screen. Great atmosphere guaranteed, snacks and drinks available. We bel
